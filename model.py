@@ -17,8 +17,8 @@ class Model(db.Model):
 
     __tablename__ = "models"
 
-    model_id = db.Column(db.Integer, autoincrement=True, primary_keys=True)
-    year = db.Column(db.Datetime, nullable=False)
+    model_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    year = db.Column(db.DateTime, nullable=False)
     brand_name = db.Column(db.String(50),
                            db.ForeignKey('brands.name'),
                            nullable=True)
@@ -34,9 +34,9 @@ class Brand(db.Model):
 
     __tablename__ = "brands"
 
-    brand_id = db.Column(db.Integer, autoincrement=True, primary_keys=True)
+    brand_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    founded = db.Column(db.Datetime, nullable=True)
+    founded = db.Column(db.DateTime, nullable=True)
     headquarters = db.Column(db.String(50), nullable=True)
     discontinued = db.Column(db.Integer, nullable=True)
 
