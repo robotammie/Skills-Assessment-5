@@ -17,7 +17,7 @@ class Model(db.Model):
 
     __tablename__ = "models"
 
-    model_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     year = db.Column(db.DateTime, nullable=False)
     brand_name = db.Column(db.String(50),
                            db.ForeignKey('brands.name'),
@@ -26,7 +26,14 @@ class Model(db.Model):
 
     brand = db.relationship('Brand',
                             backref=db.backref('models',
-                                               order_by=model_id))
+                                               order_by=id))
+
+    def __repr__(self):
+        """define how model displays"""
+
+        return "<Model id:%s %s %s>" % (self.id,
+                                        self.brand_name,
+                                        self.name)
 
 
 class Brand(db.Model):
@@ -34,13 +41,17 @@ class Brand(db.Model):
 
     __tablename__ = "brands"
 
-    brand_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     founded = db.Column(db.DateTime, nullable=True)
     headquarters = db.Column(db.String(50), nullable=True)
     discontinued = db.Column(db.Integer, nullable=True)
 
+    def __repr__(self):
+        """define how model displays"""
 
+        return "<Brand id:%s %s>" % (self.id,
+                                     self.name)
 
 # End Part 1
 
