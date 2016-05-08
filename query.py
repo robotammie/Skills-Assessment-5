@@ -57,28 +57,65 @@ def get_model_info(year):
     '''Takes in a year, and prints out each model, brand_name, and brand
     headquarters for that year using only ONE database query.'''
 
-    pass
+    models = db.session.query(Model.name,
+                              Model.brand_name,
+                              Brand.headquarters
+                              ).filter(Model.year == year
+                              ).all()
+
+    for model in models:
+        name, brand, hq = model
+        print "%s \t%s\t%s\n" % (name, brand, headquarters)
+
 
 def get_brands_summary():
     '''Prints out each brand name, and each model name for that brand
-     using only ONE database query.'''
+    using only ONE database query.'''
 
-    pass
+    models = db.session.query(Brand.name, Model.name).all()
+
+    for model in models:
+        brand, model = model
+        print "%s \t%s\n" % (brand, model)
+
 
 # -------------------------------------------------------------------
 # Part 2.5: Discussion Questions (Include your answers as comments.)
 
 # 1. What is the returned value and datatype of ``Brand.query.filter_by(name='Ford')``?
 
+# The above expression returns a query object. In order to actually query
+# the database, you would have to add .all(), .one(), .first(), or .count().
+
 # 2. In your own words, what is an association table, and what *type* of relationship
 # does an association table manage?
+
+# An association talbe is a table whose only purpose is to bind two other tables
+# together. It is used in situations where there is a "many to many" relationship.
+# The assiciation table manages this by binding itself in a "many to one"
+# relationship to both tables.
+# For instance, one movie may have many actors in it, and one actor might be in
+# many movies. Rather than try to link movies and actors together directly, you
+# would insert an association table between them, with each line in the new table
+# corresponding to one connection between movie and actor (Tom Hanks, Saving
+# Private Ryan; Tom Hanks, Big; Matt Damon, Saving Private Ryan)
 
 # -------------------------------------------------------------------
 # Part 3
 
 def search_brands_by_name(mystr):
-    pass
+    """Returns a list of brand objects where the brand name is or contains the
+    given string"""
+
+    brands = Brand.query.filter(Brand.name.like("%"+mystr+"%")).all()
+
+    return brands
 
 
 def get_models_between(start_year, end_year):
-    pass
+    """Finds all models introduced between any two years."""
+
+    models = Model.query.filter(Model.year >= start_year,
+                                Model.year < end_year).all()
+
+    return models
